@@ -13,7 +13,37 @@
 <p> Test your knowlegde with these questions</p>
 <button id="start-btn">  Start Quiz</button>
 </div>
-<div></div>
+<div class="screen" id="quiz-screen">
+    <div>
+        <h2 id="question-text">Question will go here</h2>
+        <div class="quiz-info">
+            <p>
+                Question <span id="current-question">1</span> of <span>5</span>
+            </p>
+            <p>
+                Score: <span id="score">0</span>
+            </p>
+
+        </div>
+    </div>
+<div id="answer-container" class="answer-container">
+    <!-- Answers will be dynamically added here -->
+
+</div>
+<div class="progress-bar">
+    <div class="progress" id="progress"></div>
+
+</div>
+</div>
+<div id="results-screen" class="sreen">
+    <h1> Quiz Results</h1>
+    <div class="results-info">
+        <p> You answered <span id="final-score">0</span> out of <span id="max-score">5</span></p>
+        <div id="result-message">Good job! </div>
+
+    </div>
+<button id="restart-btn">Restart Quiz</button>
+</div>
     </div>
 </body>
 </html>
