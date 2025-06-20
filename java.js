@@ -1,7 +1,7 @@
 // DOM Elements
 const startScreen = document.getElementById("start-screen");
 const quizScreen = document.getElementById("quiz-screen");
-const resultScreen = document.getElementById("result-screen");
+const resultScreen = document.getElementById("results-screen");
 const startButton = document.getElementById("start-btn");
 const questionText = document.getElementById("question-text");
 const answersContainer = document.getElementById("answers-container");
@@ -16,52 +16,53 @@ const progressBar = document.getElementById("progress");
 
 // Quiz questions
 const quizQuestions = [
-    {
-      question: "What is the capital of France?",
-      answers: [
-        { text: "London", correct: false },
-        { text: "Berlin", correct: false },
-        { text: "Paris", correct: true },
-        { text: "Madrid", correct: false },
-      ],
-    },
-    {
-      question: "Which planet is known as the Red Planet?",
-      answers: [
-        { text: "Venus", correct: false },
-        { text: "Mars", correct: true },
-        { text: "Jupiter", correct: false },
-        { text: "Saturn", correct: false },
-      ],
-    },
-    {
-      question: "What is the largest ocean on Earth?",
-      answers: [
-        { text: "Atlantic Ocean", correct: false },
-        { text: "Indian Ocean", correct: false },
-        { text: "Arctic Ocean", correct: false },
-        { text: "Pacific Ocean", correct: true },
-      ],
-    },
-    {
-      question: "Which of these is NOT a programming language?",
-      answers: [
-        { text: "Java", correct: false },
-        { text: "Python", correct: false },
-        { text: "Banana", correct: true },
-        { text: "JavaScript", correct: false },
-      ],
-    },
-    {
-      question: "What is the chemical symbol for gold?",
-      answers: [
-        { text: "Go", correct: false },
-        { text: "Gd", correct: false },
-        { text: "Au", correct: true },
-        { text: "Ag", correct: false },
-      ],
-    },
-  ];
+  {
+    question: "What is the main purpose of version control systems like Git?",
+    answers: [
+      { text: "Compress code files", correct: false },
+      { text: "Secure the code from hackers", correct: false },
+      { text: "Track changes and collaborate on code", correct: true },
+      { text: "Increase execution speed of programs", correct: false },
+    ],
+  },
+  {
+    question: "What does CSS control in a web page?",
+    answers: [
+      { text: "Structure", correct: false },
+      { text: "Database", correct: false },
+      { text: "Styling and layout", correct: true },
+      { text: "Browser speed", correct: false },
+    ],
+  },
+  {
+    question: "Which HTTP method is used to update data on a server?",
+    answers: [
+      { text: "GET", correct: false },
+      { text: "PUT", correct: true },
+      { text: "DELETE", correct: false },
+      { text: "CONNECT", correct: false },
+    ],
+  },
+  {
+    question: "Which of these is NOT a programming language?",
+    answers: [
+      { text: "Java", correct: false },
+      { text: "Python", correct: false },
+      { text: "HTML", correct: true },
+      { text: "JavaScript", correct: false },
+    ],
+  },
+  {
+    question:
+      "Which tool is commonly used for debugging JavaScript in the browser?",
+    answers: [
+      { text: "Terminal", correct: false },
+      { text: "Browser DevTools", correct: true },
+      { text: "Notepad", correct: false },
+      { text: "Word Processor", correct: false },
+    ],
+  },
+];
 
   //QUIZ STATE VARS
 let currentQuestionIndex = 0;
@@ -80,28 +81,37 @@ function startQuiz() {
     currentQuestionIndex = 0;
     score = 0;
     scoreSpan.textContent = score;
+// Swicth screens
 
     startScreen.classList.remove("active");
     quizScreen.classList.add("active");
+    resultScreen.classList.remove("active");
 
     showQuestion();
 }
 function showQuestion() {
     //reset state
     answersDisabled = false;
-
+answersContainer.innerHTML = ""; // Clear previous answers 
     const currentQuestion = quizQuestions[currentQuestionIndex];
     currentQuestionSpan.textContent = currentQuestionIndex + 1;
-
+totalQuestionsSpan.textContent = quizQuestions.length;
+   //Update progress bar
     const progressPercentage = ((currentQuestionIndex + 1) / quizQuestions.length) * 100;
     progressBar.style.width = `${progressPercentage}%`;
     questionText.textContent = currentQuestion.question;
-    answersContainer.innerHTML = ""; // Clear previous answers  
+     
     currentQuestion.answers.forEach(answer => {
         const button = document.createElement("button");
         button.textContent = answer.text;
         button.classList.add("answer-btn");
-        button.dataset.correct = answer.correct;                    
+        // Set data attribute to check if the answer is correct
+        if (answer.correct) {
+            button.dataset.correct = "true";
+        } else {
+            button.dataset.correct = "false";
+        }
+                          
         button.addEventListener("click",selectAnswer);
         answersContainer.appendChild(button);
     });     
@@ -114,7 +124,7 @@ function selectAnswer(event) {
     Array.from(answersContainer.children).forEach((button) => {
         if  (button.dataset.correct === "true") {
             button.classList.add("correct");
-        } else  if (button ==== selectedButton) {
+        } else  if (button === selectedButton) {
             button.classList.add("incorrect");
         }
     });
@@ -132,8 +142,10 @@ if (isCorrect) {
             showResult();
         }
     }, 1000);
+}
 
 function showResult() {
+    
     quizScreen.classList.remove("active");
     resultScreen.classList.add("active");
 
@@ -156,9 +168,5 @@ function showResult() {
 function restartQuiz() {
     resultScreen.classList.remove("active");
     startScreen.classList.add("active");
-    answersContainer.innerHTML = ""; // Clear previous answers
-    progressBar.style.width = "0%"; // Reset progress bar
-    currentQuestionIndex = 0; // Reset question index
-    score = 0; // Reset score
-    scoreSpan.textContent = score; // Update score display
+   startQuiz();
 }
